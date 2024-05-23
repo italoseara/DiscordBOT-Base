@@ -1,0 +1,16 @@
+{
+  "main": "dist/index.js",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/src/index.js",
+    "dev": "tsc -w & nodemon dist/src/index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.0"
+  }
+}
