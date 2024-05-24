@@ -1,0 +1,23 @@
+{
+  "command": {
+    "noPermission": "Você não tem permissão para usar este comando.",
+    "developer": "Este comando é apenas para desenvolvedores.",
+    "error": "Ocorreu um erro ao executar este comando.",
+    "disabled": "Este comando está desativado."
+  },
+  "info": {
+    "uptime": "Tempo de atividade",
+    "ping": "Latência",
+    "debug": "Depuração",
+    "cpu": "Uso da CPU",
+    "memory": "Uso de memória",
+    "temperature": "Temperatura",
+    "users": "Usuários",
+    "guilds": "Guildas",
+    "owners": "Donos",
+    "footer": "Requisitado por {user}",
+    "title": "Informações Internas",
+    "on": "Ligado",
+    "off": "Desligado"
+  }
+}

@@ -2,11 +2,10 @@ import { Client, IntentsBitField, REST, Routes, SlashCommandBuilder } from "disc
 
 import { Event } from "@/types/events";
 import { Command } from "@/types/commands";
-import { getFilesInDirectory } from "./util";
+import { getFilesInDirectory, getString, loadLocales } from "./util";
 import config from "../config.json";
 
 const { DISCORD_TOKEN } = process.env;
-const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN || "");
 
 export default class Bot extends Client {
   public commands: Map<string, SlashCommandBuilder>;
@@ -24,6 +23,7 @@ export default class Bot extends Client {
   }
 
   public start = async () => {
+    loadLocales("./src/locales");
     this.handleEvents();
     this.handleCommands();
     this.refreshCommands();
@@ -46,6 +46,7 @@ export default class Bot extends Client {
 
         console.log(`✅ Event ${data.name} is loaded`);
       }
+      console.log();
     } catch (error) {
       console.error(`❌ Error loading events: ${error}`);
     }
@@ -57,7 +58,7 @@ export default class Bot extends Client {
       const commandFiles = getFilesInDirectory("./src/commands", ".ts");
 
       for (const file of commandFiles) {
-        const { data, execute, ownerOnly } = require(`./commands/${file}`).default as Command;
+        const { data, execute, developer } = require(`./commands/${file}`).default as Command;
 
         this.commands.set(data.name, data);
         this.on("interactionCreate", async (interaction) => {
@@ -65,8 +66,11 @@ export default class Bot extends Client {
 
           const { commandName } = interaction;
           if (commandName === data.name) {
-            if (ownerOnly && !config.owners.includes(interaction.user.id)) {
-              await interaction.reply({ content: "You are not allowed to use this command!", ephemeral: true });
+            if (developer && !config.owners.includes(interaction.user.id)) {
+              await interaction.reply({ 
+                content: getString("command.developer"), 
+                ephemeral: true 
+              });
               return;
             }
 
@@ -74,13 +78,17 @@ export default class Bot extends Client {
               await execute(this, interaction);
             } catch (error) {
               console.error(`❌ Error executing command /${commandName}: ${error}`);
-              await interaction.reply({ content: "There was an error while executing this command!", ephemeral: true });
+              await interaction.reply({ 
+                content: getString("command.error"),
+                ephemeral: true 
+              });
             }
           }
         });
 
         console.log(`✅ Command /${data.name} is loaded`);
       }
+      console.log();
     } catch (error) {
       console.error(`❌ Error loading commands: ${error}`);
     }
@@ -90,6 +98,7 @@ export default class Bot extends Client {
     try {
       console.log("🔧 Refreshing commands...");
       const commands = Array.from(this.commands.values());
+      const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN || "");
 
       if (config.debug) {
         await rest.put(
@@ -103,7 +112,7 @@ export default class Bot extends Client {
         );
       }
 
-      console.log(`🔧 Successfully refreshed ${commands.length} commands`);
+      console.log(`🔧 Successfully refreshed ${commands.length} commands\n`);
     } catch (error) {
       console.error(`❌ Error refreshing commands: ${error}`);
     }

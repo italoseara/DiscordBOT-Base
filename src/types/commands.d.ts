@@ -3,6 +3,6 @@ import Bot from '@/bot';
 
 export type Command = {
   data: SlashCommandBuilder;
-  ownerOnly?: boolean;
+  developer?: boolean;
   execute: (bot: Bot, interaction: CommandInteraction) => Promise<void>;
 };

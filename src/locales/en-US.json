@@ -1,0 +1,23 @@
+{
+  "command": {
+    "noPermission": "You do not have permission to use this command.",
+    "developer": "This command is only available to developers.",
+    "error": "An error occurred while executing the command.",
+    "disabled": "This command is disabled."
+  },
+  "info": {
+    "uptime": "Uptime",
+    "ping": "Ping",
+    "debug": "Debug",
+    "cpu": "CPU Usage",
+    "memory": "Memory Usage",
+    "temperature": "Temperature",
+    "users": "Users",
+    "guilds": "Guilds",
+    "owners": "Owners",
+    "footer": "Requested by {user}",
+    "title": "Internal Information",
+    "on": "On",
+    "off": "Off"
+  }
+}
